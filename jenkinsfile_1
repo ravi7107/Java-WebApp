@@ -5,8 +5,8 @@ stages{
 		steps{
 			script{
 			S3_BUCKET="your-s3-bucket-name"
-			SOURCE_PATH="path/to/source/file.txt"
-			DESTINATION_PATH="path/to/destination/file.txt"
+			SOURCE_PATH="WebApp.war"
+			DESTINATION_PATH="/home/ubuntu/deployment_server/apache-tomcat-10.1.11/webapps"
 			# Use the AWS CLI to copy the file
 			aws s3 cp s3://$S3_BUCKET/$SOURCE_PATH $DESTINATION_PATH
 				}
