@@ -1,16 +1,16 @@
 pipeline {
-    agent {label 'deployment_server'}
-stages{
-	stage{
-		steps{
-			script{
-			S3_BUCKET="your-s3-bucket-name"
-			SOURCE_PATH="WebApp.war"
-			DESTINATION_PATH="/home/ubuntu/deployment_server/apache-tomcat-10.1.11/webapps"
-			//Use the AWS CLI to copy the file
-			aws s3 cp s3://$S3_BUCKET/$SOURCE_PATH $DESTINATION_PATH
-				}
-			}	
-		}	
-	}	
+    agent { label 'deployment_server' }
+    stages {
+        stage('Copy S3 File to Tomcat') {
+            steps {
+                script {
+                    S3_BUCKET = "mys301082023"
+                    SOURCE_PATH = "WebApp.war"
+                    DESTINATION_PATH = "/home/ubuntu/deployment_server/apache-tomcat-10.1.11/webapps"
+                    // Use the AWS CLI to copy the file
+                    sh "aws s3 cp s3://$S3_BUCKET/$SOURCE_PATH $DESTINATION_PATH"
+                }
+            }
+        }
+    }
 }
