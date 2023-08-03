@@ -1,31 +1,16 @@
 pipeline {
     agent {label 'deployment_server'}
-    
-    environment {
-        // Update these with your AWS credentials and S3 bucket details
-        AWS_ACCESS_KEY_ID = credentials('AKIA6KE3AQUXJ6K6ULUH') // You should add your AWS access key as a Jenkins credential
-        AWS_SECRET_ACCESS_KEY = credentials('Le8rGM1KRC06kmOC6SUmPbL4adbMG3IMmMjVtJIJ') // You should add your AWS secret key as a Jenkins credential
-        S3_BUCKET = 'mys301082023'
-        S3_OBJECT_KEY = 'WebApp.war' // This is the specific file or folder path in the S3 bucket you want to copy
-        LOCAL_DESTINATION = '/home/ubuntu/deployment_server/apache-tomcat-10.1.11/webapps' // Local folder on the Jenkins agent to copy the S3 files
-    }
-    
-    stages {
-        stage('Install AWS CLI') {
-            steps {
-                sh 'apt-get update && apt-get install -y awscli' // For Linux-based agents
-                // If you are using a different OS for Jenkins agents, adjust the package installation accordingly.
-            }
-        }
-        
-        stage('Copy files from S3') {
-            steps {
-                script {
-                    // Use AWS CLI to copy files from S3 to the Jenkins agent
-                    sh "aws s3 cp s3://${S3_BUCKET}/${S3_OBJECT_KEY} ${LOCAL_DESTINATION}"
-                }
-            }
-        }
-    }
+stages{
+	stage{
+		steps{
+			script{
+			S3_BUCKET="your-s3-bucket-name"
+			SOURCE_PATH="path/to/source/file.txt"
+			DESTINATION_PATH="path/to/destination/file.txt"
+			# Use the AWS CLI to copy the file
+			aws s3 cp s3://$S3_BUCKET/$SOURCE_PATH $DESTINATION_PATH
+				}
+			}	
+		}	
+	}	
 }
-
