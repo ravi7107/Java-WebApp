@@ -6,13 +6,7 @@ pipeline {
             steps {
                 sh "mvn clean"
                 sh "mvn install"
-            }
-        }   
-        stage("This stage will copy package to S3"){
-            steps{
-                sh "aws s3 cp /home/ubuntu/build_server/workspace/job_1/target/WebApp.war s3://mys301082023" 
                 }
-            }
-
+            }   
         }
     }
