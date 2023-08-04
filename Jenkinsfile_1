@@ -11,13 +11,6 @@ pipeline {
     }
     
     stages {
-        stage('Install AWS CLI') {
-            steps {
-                sh 'apt-get update && apt-get install -y awscli' // For Linux-based agents
-                // If you are using a different OS for Jenkins agents, adjust the package installation accordingly.
-            }
-        }
-        
         stage('Copy files from S3') {
             steps {
                 script {
@@ -27,4 +20,4 @@ pipeline {
             }
         }
     }
-}
+
