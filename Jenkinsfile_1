@@ -1,26 +1,26 @@
-def s3_source = "s3://mys301082023/WebApp.war"
-def s3_dest = "/home/ubuntu/deploy_server/tomcat/apache-tomcat-9.0.78/webapps/WebApp.war"
-
-
 pipeline {
-  agent {label "deploy_server"}
-  
-  stages {
-  
-    stage ("Delete the old maven package") {
-      steps {
-        print ("Deleting the old maven package")
-        sh "rm -rf /home/ubuntu/deploy_server/tomcat/apache-tomcat-9.0.78/webapps/WebApp.war"
-      }
+    agent any
+
+    environment {
+        S3_BUCKET = 'mys3110823'
+        S3_PREFIX = 'WebApp.war'
+        LOCAL_DEST = '/home/ubuntu/deploy_server/tomcat/apache-tomcat-9.0.78/webapps/WebApp.war'
     }
-    
-    stage ("Download the maven package from S3 bucket") {
-      steps {
-      
-        //Download and copy the maven package
-        print ("Downloading the maven package from S3 bucket")
-        sh "aws s3 cp ${s3_source} ${s3_dest}"
-      }
+
+    stages {
+        stage('Copy Files from S3') {
+            steps {
+                script {
+                    def s3Files = sh(
+                        script: "aws s3 ls s3://${S3_BUCKET}/${S3_PREFIX} --recursive | awk '{print \$4}'",
+                        returnStdout: true
+                    ).trim().split('\n')
+
+                    for (def file in s3Files) {
+                        sh "aws s3 cp s3://${S3_BUCKET}/${file} ${LOCAL_DEST}"
+                    }
+                }
+            }
+        }
     }
-  }
 }
