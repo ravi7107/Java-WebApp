@@ -9,19 +9,15 @@ pipeline {
 
 
     stages {
-        stage('Copy Files from S3') {
+        stage('Copy Files from S3 to EC2') {
             steps {
                 script {
-                    def s3Files = sh(
-                        script: "aws s3 ls s3://${S3_BUCKET}/${S3_PREFIX} --recursive | awk '{print \$4}'",
-                        returnStdout: true
-                    ).trim().split('\n')
-
-                    for (def file in s3Files) {
-                        sh "aws s3 cp s3://${S3_BUCKET}/${file} ${LOCAL_DEST}"
-                    }
+                    echo "Copying files from ${S3_SOURCE} to ${LOCAL_DEST}"
+                    sh "aws s3 cp ${S3_SOURCE} ${LOCAL_DEST} --recursive"
+                    echo "Files copied successfully"
                 }
             }
+        }
         }
     }
 }
