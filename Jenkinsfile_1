@@ -1,6 +1,7 @@
 def s3_source = "s3://mys301082023/WebApp.war"
 def s3_dest = "/home/ubuntu/deploy_server/tomcat/webapps/WebApp.war"
 
+
 pipeline {
   agent {label "deploy_server"}
   
