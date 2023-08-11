@@ -7,6 +7,7 @@ pipeline {
         LOCAL_DEST = '/home/ubuntu/deploy_server/tomcat/apache-tomcat-9.0.78/webapps/WebApp.war'
     }
 
+
     stages {
         stage('Copy Files from S3') {
             steps {
