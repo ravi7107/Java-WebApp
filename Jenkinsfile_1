@@ -1,13 +1,25 @@
+def s3_source = "s3://mys3110823/WebApp.war"
+def s3_dest = "/home/ubuntu/deploy_server/tomcat/apache-tomcat-9.0.78/webapps/WebApp.war"
+
 pipeline {
-    agent {label "deploy_server"}
-
-    stages {
-        stage('Copy Files from S3 to EC2') {
-            steps {
-            sh "aws s3 cp s3://mys3110823/WebApp.war /home/ubuntu/deploy_server/tomcat/apache-tomcat-9.0.78/webapps/"
-
-            }
-        }
-        
+  agent {label "deploy_server"}
+  
+  stages {
+  
+    stage ("Delete the old maven package") {
+      steps {
+        print ("Deleting the old maven package")
+        sh "rm -rf /home/ubuntu/deploy_server/tomcat/apache-tomcat-9.0.78/webapps/WebApp.war"
+      }
     }
+    
+    stage ("Download the maven package from S3 bucket") {
+      steps {
+      
+        //Download and copy the maven package
+        print ("Downloading the maven package from S3 bucket")
+        sh "aws s3 cp ${s3_source} ${s3_dest}"
+      }
+    }
+  }
 }
