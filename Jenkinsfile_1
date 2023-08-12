@@ -1,23 +1,13 @@
 pipeline {
     agent any
 
-    environment {
-        S3_BUCKET = 'mys3110823'
-        S3_PREFIX = 'WebApp.war'
-        LOCAL_DEST = '/home/ubuntu/deploy_server/tomcat/apache-tomcat-9.0.78/webapps/WebApp.war'
-    }
-
-
     stages {
         stage('Copy Files from S3 to EC2') {
             steps {
-                script {
-                    echo "Copying files from ${S3_SOURCE} to ${LOCAL_DEST}"
-                    sh "aws s3 cp ${S3_SOURCE} ${LOCAL_DEST} --recursive"
-                    echo "Files copied successfully"
-                }
+            sh aws s3 cp s3://mys3110823/WebApp.war /home/ubuntu/deploy_server/tomcat/apache-tomcat-9.0.78/webapps/
+
             }
         }
-        }
+        
     }
 }
