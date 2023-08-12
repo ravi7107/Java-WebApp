@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Copy Files from S3 to EC2') {
             steps {
-            sh aws s3 cp s3://mys3110823/WebApp.war /home/ubuntu/deploy_server/tomcat/apache-tomcat-9.0.78/webapps/
+            sh "aws s3 cp s3://mys3110823/WebApp.war /home/ubuntu/deploy_server/tomcat/apache-tomcat-9.0.78/webapps/"
 
             }
         }
